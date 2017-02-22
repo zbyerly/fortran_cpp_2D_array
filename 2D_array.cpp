@@ -1,5 +1,5 @@
 #include <iostream>
-#include fname.h
+#include "fname.h"
 
 extern"C" {
     void FNAME(init_array)(void** module_c_ptr,
