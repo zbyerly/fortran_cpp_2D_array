@@ -36,10 +36,16 @@ int main()
 	    std::cout << array_ptrs[i] << std::endl;
 	    double *dptr;
 	    dptr = (double *)array_ptrs[i];
+
+	    //std::cout << dptr[2] << std::endl;
+	    
 	    for (int j=0; j<length1darrays; j++)
 		{
-		    std::cout << "dptr[" << j << "] = " << dptr[j] << std::endl;
+		    //std::cout << "dptr[" << j << "] = " << dptr[j] << std::endl;
+		    std::cout << "array[" << i << "," << j << "] = " << dptr[j]
+			      << std::endl;
 		}
+	    
 	}
     
     FNAME(print_values)(&module_ptr);
