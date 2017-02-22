@@ -83,6 +83,7 @@ subroutine print_values(module_c_ptr)
         module_here%array2d(i,j) = i+j*2.5
         print*, "array2d[",i,"][",j,"] = ",module_here%array2d(i,j)
      end do
+     print*, " "
   end do
   
   

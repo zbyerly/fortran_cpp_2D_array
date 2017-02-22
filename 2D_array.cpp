@@ -28,7 +28,20 @@ int main()
 	{
 	    FNAME(get_array_ptr)(&module_ptr,&i,&array_ptrs[i]);
 	}
-
+    
+    // Print values from c++ code
+    std::cout << "cpp: Printing values from c++ code" << std::endl;
+    for (int i=0; i<num1darrays; i++)
+	{
+	    std::cout << array_ptrs[i] << std::endl;
+	    double *dptr;
+	    dptr = (double *)array_ptrs[i];
+	    for (int j=0; j<length1darrays; j++)
+		{
+		    std::cout << "dptr[" << j << "] = " << dptr[j] << std::endl;
+		}
+	}
+    
     FNAME(print_values)(&module_ptr);
     
 }
