@@ -4,11 +4,18 @@ subroutine init_array(module_c_ptr, num1darrays_fromc, length1darrays_fromc)
   implicit none
   
   type (C_PTR) :: module_c_ptr
-  integer :: num1darrays
-  integer :: length1darrays
+
+  integer :: i,j ! loop variables
+  
+  integer :: num1darrays_fromc
+  integer :: length1darrays_fromc
   
   type (arraytest_type), pointer :: module_here
 
+  print*, "Fortran (init_array): Entering subroutine"
+  print*, "Fortran (init_array): num1darrays_fromc = ", num1darrays_fromc
+  print*, "Fortran (init_array): length1darrays_fromc = ", length1darrays_fromc
+  
   allocate(module_here)
   ! allocate an array in fortran inside of the module
 
@@ -17,17 +24,45 @@ subroutine init_array(module_c_ptr, num1darrays_fromc, length1darrays_fromc)
   module_here%num1darrays = num1darrays_fromc
   module_here%length1darrays = length1darrays_fromc
 
-  print* "module_here%num1darrays = ", module_here%num1darrays
-  print* "module_here%length1darrays = ", module_here%length1darrays
-  
-  allocate(module_here%array2d(module_here%num1darrays,module_here%length1darrays))
+  print*, "Fortran (init_array): module_here%num1darrays = ", module_here%num1darrays
+  print*, "Fortran (init_array): module_here%length1darrays = ", module_here%length1darrays
 
+  print*, "Fortran (init_array): allocating module_here"
+  allocate(module_here%array2d(module_here%num1darrays,module_here%length1darrays))
+!  allocate(arrays_c_ptrs(module_here%num1darrays))
+  
   ! get the c pointer to return to cpp
   module_c_ptr = C_LOC(module_here)
+
+  print*, "Fortran (init_array): printing values"
+  do i=1,module_here%num1darrays
+     do j=1,module_here%length1darrays
+        module_here%array2d(i,j) = i+j*2.5
+        print*, "array2d[",i,"][",j,"] = ",module_here%array2d(i,j)
+     end do
+  end do
   
 end subroutine init_array
 
-subroutine change_values(module_c_ptr)
+subroutine get_array_ptr(module_c_ptr,i,array_c_ptr)
+  use, intrinsic :: iso_c_binding
+  use arraytestmodule
+  implicit none
+
+  integer :: i ! index of the sub array
+  
+  type (C_PTR) :: module_c_ptr
+  type (C_PTR) :: array_c_ptr
+
+  type (arraytest_type), pointer :: module_here
+
+  call C_F_POINTER(module_c_ptr,module_here)
+  
+  array_c_ptr = C_LOC(module_here%array2d(i,1))
+
+end subroutine get_array_ptr
+
+subroutine print_values(module_c_ptr)
   use, intrinsic :: iso_c_binding
   use arraytestmodule
   implicit none
@@ -35,9 +70,20 @@ subroutine change_values(module_c_ptr)
   type (C_PTR) :: module_c_ptr
 
   type (arraytest_type), pointer :: module_here
+
+  integer :: i,j ! loop variables
   
   call C_F_POINTER(module_c_ptr,module_here)
 
-  write(*,*) "Entering change_values Fortran subroutine"
+  write(*,*) "Fortran (print_values): Entering subroutine"
+
+  print*, "Fortran (print_values): printing values"
+  do i=1,module_here%num1darrays
+     do j=1,module_here%length1darrays
+        module_here%array2d(i,j) = i+j*2.5
+        print*, "array2d[",i,"][",j,"] = ",module_here%array2d(i,j)
+     end do
+  end do
   
-end subroutine change_values
+  
+end subroutine print_values
