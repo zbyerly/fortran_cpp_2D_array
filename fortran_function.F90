@@ -42,7 +42,7 @@ subroutine init_array(module_c_ptr, num1darrays_fromc, length1darrays_fromc)
   do i=1,module_here%length1darrays
      do j=1,module_here%num1darrays
         module_here%array2d(i,j) = i+j*2.5
-        print*, "array2d[",i,"][",j,"] = ",module_here%array2d(i,j)
+        print*, "array2d[",j,"][",i,"] = ",module_here%array2d(i,j)
      end do
   end do
   
@@ -87,16 +87,9 @@ subroutine print_values(module_c_ptr)
   print*, "Fortran (print_values): printing values"
   do i=1,module_here%length1darrays
      do j=1,module_here%num1darrays
-        print*, "array2d[",i,"][",j,"] = ",module_here%array2d(i,j)
+        print*, "array2d[",j,"][",i,"] = ",module_here%array2d(i,j)
      end do
   end do
-
-!  do i=1,module_here%length1darrays
-!     do j=1,module_here%num1darrays
-!        print*, "array2d[",j,"][",i,"] = ",module_here%array2d(j,i)
-!     end do
-!  end do
-  
   
 end subroutine print_values
 
